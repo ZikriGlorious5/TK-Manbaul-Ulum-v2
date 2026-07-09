@@ -28,9 +28,15 @@ Route::get('/dashboard', function () {
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/kegiatan', [KegiatanController::class, 'adminIndex'])->name('kegiatan.index');
     Route::resource('kegiatan', KegiatanController::class)->except(['index', 'show']);
+
+    Route::get('/prestasi', [PrestasiController::class, 'adminIndex'])->name('prestasi.index');
     Route::resource('prestasi', PrestasiController::class)->except(['index', 'show']);
-    Route::resource('galeri', GaleriController::class)->except(['index', 'show']);
+
+    Route::get('/guru', [GuruController::class, 'adminIndex'])->name('guru.index');
     Route::resource('guru', GuruController::class)->except(['index', 'show']);
+
+    Route::get('/galeri', [GaleriController::class, 'adminIndex'])->name('galeri.index');
+    Route::resource('galeri', GaleriController::class)->except(['index', 'show', 'edit', 'update']);
 
     Route::get('/sejarah', [SejarahController::class, 'edit'])->name('sejarah.edit');
     Route::put('/sejarah', [SejarahController::class, 'update'])->name('sejarah.update');
