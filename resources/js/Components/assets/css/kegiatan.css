@@ -1,0 +1,28 @@
+.section-intro {
+  text-align: center; color: #555;
+  font-size: 16px; font-weight: 600;
+  max-width: 680px; margin: 0 auto 36px;
+}
+.kegiatan-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+.card-kegiatan {
+  border-radius: var(--radius); padding: 28px;
+  box-shadow: var(--shadow);
+  border: 2px solid var(--cream-dark);
+  transition: transform 0.2s, box-shadow 0.2s;
+  background: var(--white);
+}
+.card-kegiatan:hover { transform: translateY(-6px); box-shadow: 0 10px 30px rgba(0,0,0,0.12); }
+.card-icon { font-size: 44px; display: block; margin-bottom: 14px; }
+.card-kegiatan h3 {
+  font-family: 'Fredoka One', cursive;
+  font-size: 20px; color: var(--green-dark); margin-bottom: 10px;
+}
+.card-kegiatan p { font-size: 14px; color: #666; font-weight: 600; line-height: 1.7; }
+.card-kegiatan.card-pastel-green { background: #e8f5e9; border-color: #c8e6c9; }
+.card-kegiatan.card-pastel-yellow { background: #fffde7; border-color: #fff9c4; }
+.card-kegiatan.card-pastel-blue  { background: #e3f2fd; border-color: #bbdefb; }
+.card-kegiatan.card-pastel-pink  { background: #fce4ec; border-color: #f8bbd0; }
