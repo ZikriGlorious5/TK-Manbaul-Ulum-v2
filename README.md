@@ -1,59 +1,137 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# TK Manbaul Ulum — Website CMS
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Website profil sekolah TK Manbaul Ulum (Ciampea, Kab. Bogor), dibangun dengan Laravel + Inertia.js + React, database PostgreSQL (Supabase).
 
-## About Laravel
+## Tech Stack
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Backend**: Laravel 12 (PHP 8.2+)
+- **Frontend**: React 19 + Inertia.js (bukan REST API terpisah — satu aplikasi)
+- **Styling**: Tailwind CSS
+- **Database**: PostgreSQL via Supabase
+- **Auth**: Laravel Breeze (session-based, httpOnly cookie)
+- **Upload foto**: Local storage Laravel (sementara, akan dipindah ke cloud storage saat production)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Setup Development
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 1. Clone & install dependencies
 
-## Learning Laravel
+```bash
+git clone <url-repo>
+cd tk-manbaul-ulum-backend
+composer install
+npm install
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### 2. Environment
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+cp .env.example .env
+```
 
-## Laravel Sponsors
+Isi `.env`, minta kredensial database ke penanggung jawab backend:
+```
+DB_CONNECTION=pgsql
+DB_HOST=<tanya-ke-backend>
+DB_PORT=5432
+DB_DATABASE=postgres
+DB_USERNAME=<tanya-ke-backend>
+DB_PASSWORD=<tanya-ke-backend>
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Generate application key:
+```bash
+php artisan key:generate
+```
 
-### Premium Partners
+### 3. Storage symlink (supaya foto upload bisa diakses browser)
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```bash
+php artisan storage:link
+```
 
-## Contributing
+### 4. Jalankan development server
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Buka **2 terminal terpisah**, biarkan keduanya tetap jalan:
 
-## Code of Conduct
+```bash
+# Terminal 1
+npm run dev
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# Terminal 2
+php artisan serve
+```
 
-## Security Vulnerabilities
+Buka `http://127.0.0.1:8000` di browser.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 5. Akun admin
 
-## License
+- Daftar akun sendiri lewat `http://127.0.0.1:8000/register`, **atau**
+- Minta akun yang sudah ada ke penanggung jawab backend
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Akun hanya diperlukan untuk mengakses `/dashboard` dan `/admin/*`. Semua halaman publik bisa diakses tanpa login.
+
+---
+
+## Struktur Project (untuk Tim Frontend)
+
+```
+resources/js/
+├── Components/       → Navbar, Footer, useReveal (elemen reusable)
+├── Layouts/
+│   ├── MainLayout.jsx    → pembungkus halaman publik (Navbar + Footer)
+│   └── AdminLayout.jsx   → pembungkus halaman admin (Sidebar)
+└── Pages/
+    ├── Home.jsx, Sejarah.jsx, Kegiatan.jsx,
+    │   Prestasi.jsx, Kontak.jsx, Guru.jsx, Galeri.jsx   → halaman publik
+    └── Admin/
+        ├── Dashboard.jsx
+        ├── KegiatanIndex.jsx, KegiatanForm.jsx
+        ├── PrestasiIndex.jsx, PrestasiForm.jsx
+        ├── GuruIndex.jsx, GuruForm.jsx
+        ├── GaleriIndex.jsx, GaleriForm.jsx
+        ├── SejarahForm.jsx
+        └── PesanKontak.jsx
+```
+
+Styling pakai **Tailwind CSS**. Warna & font kustom ada di `tailwind.config.js` (contoh: `bg-green-dark`, `text-brown-text`, `font-fredoka`).
+
+### Cara data sampai ke halaman
+
+Setiap halaman publik menerima data lewat **props** dari Controller Laravel (bukan `fetch`/`axios`). Contoh, `Kegiatan.jsx` menerima prop `kegiatans` yang datanya sudah diambil dari database oleh `KegiatanController@index`. Kalau perlu data baru/berbeda, koordinasikan dengan penanggung jawab backend untuk menyesuaikan Controller-nya.
+
+### Routing
+
+Routing bukan di `react-router-dom`, tapi ditentukan Laravel di `routes/web.php`. Untuk pindah halaman, pakai komponen `Link` dari `@inertiajs/react`:
+```jsx
+import { Link } from '@inertiajs/react';
+<Link href="/kegiatan">Kegiatan</Link>
+```
+
+---
+
+## Git Workflow
+
+- **`main`** = versi stabil. Dilindungi — tidak bisa push langsung, harus lewat Pull Request.
+- Untuk mengerjakan sesuatu, buat branch baru dari `main`:
+
+```bash
+git checkout main
+git pull
+git checkout -b fitur/nama-fitur-kamu
+```
+
+- Setelah selesai:
+
+```bash
+git add .
+git commit -m "Penjelasan singkat perubahan"
+git push -u origin fitur/nama-fitur-kamu
+```
+
+- Buka GitHub → **Pull Requests** → **New Pull Request** → arahkan ke `main` → minta review.
+- Jangan commit file `.env`, `vendor/`, atau `node_modules/` (sudah diatur di `.gitignore`, seharusnya otomatis tidak ikut ter-commit).
+
+## Catatan Penting
+
+- Upload foto saat ini disimpan **lokal** di server masing-masing (`storage/app/public`). Foto yang di-upload di laptop kamu **tidak otomatis muncul** di laptop tim lain — ini normal untuk tahap development, akan dipindah ke cloud storage sebelum deploy production.
+- Kalau menemukan bug atau bagian yang belum sesuai desain, koordinasikan dulu sebelum mengubah struktur Controller/route, karena berkaitan langsung dengan skema database.
