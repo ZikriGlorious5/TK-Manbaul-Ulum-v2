@@ -38,6 +38,11 @@ DB_USERNAME=<tanya-ke-backend>
 DB_PASSWORD=<tanya-ke-backend>
 ```
 
+`APP_NAME` juga menentukan judul tab browser (mis. "Dashboard Admin - TK Manbaul Ulum"):
+```
+APP_NAME="TK Manbaul Ulum"
+```
+
 Generate application key:
 ```bash
 php artisan key:generate
@@ -65,8 +70,9 @@ Buka `http://127.0.0.1:8000` di browser.
 
 ### 5. Akun admin
 
-- Daftar akun sendiri lewat `http://127.0.0.1:8000/register`, **atau**
-- Minta akun yang sudah ada ke penanggung jawab backend
+⚠️ **Registrasi publik sudah dinonaktifkan.** Tidak ada lagi halaman `/register` yang bisa diakses tanpa login — akun admin tidak bisa dibuat sembarangan orang.
+
+Minta akun ke penanggung jawab backend. Admin yang sudah punya akses bisa menambah admin lain lewat menu **"Tambah Admin"** di sidebar dashboard setelah login (detail cara setup akun pertama kali dikoordinasikan langsung antar tim, tidak dituliskan di sini).
 
 Akun hanya diperlukan untuk mengakses `/dashboard` dan `/admin/*`. Semua halaman publik bisa diakses tanpa login.
 
@@ -77,12 +83,17 @@ Akun hanya diperlukan untuk mengakses `/dashboard` dan `/admin/*`. Semua halaman
 ```
 resources/js/
 ├── Components/       → Navbar, Footer, useReveal (elemen reusable)
+├── Contexts/
+│   └── ConfirmContext.jsx  → modal konfirmasi tema (pengganti window.confirm())
 ├── Layouts/
 │   ├── MainLayout.jsx    → pembungkus halaman publik (Navbar + Footer)
-│   └── AdminLayout.jsx   → pembungkus halaman admin (Sidebar)
+│   ├── GuestLayout.jsx   → pembungkus halaman login (logo + kartu tema)
+│   └── AdminLayout.jsx   → pembungkus halaman admin (Sidebar + ConfirmProvider)
 └── Pages/
     ├── Home.jsx, Sejarah.jsx, Kegiatan.jsx,
     │   Prestasi.jsx, Kontak.jsx, Guru.jsx, Galeri.jsx   → halaman publik
+    ├── Auth/
+    │   └── Login.jsx     → login, tema hijau/cream (bukan Breeze default)
     └── Admin/
         ├── Dashboard.jsx
         ├── KegiatanIndex.jsx, KegiatanForm.jsx
@@ -90,10 +101,34 @@ resources/js/
         ├── GuruIndex.jsx, GuruForm.jsx
         ├── GaleriIndex.jsx, GaleriForm.jsx
         ├── SejarahForm.jsx
-        └── PesanKontak.jsx
+        ├── PesanKontak.jsx
+        └── RegisterAdmin.jsx   → tambah admin baru (menggantikan Auth/Register.jsx lama)
 ```
 
 Styling pakai **Tailwind CSS**. Warna & font kustom ada di `tailwind.config.js` (contoh: `bg-green-dark`, `text-brown-text`, `font-fredoka`).
+
+### Aset visual
+
+- Logo sekolah: `public/images/logo.png`, dipakai di Navbar dan halaman login.
+- Favicon: `public/favicon.png` & `public/favicon.ico`, di-link lewat `resources/views/app.blade.php`.
+- Setiap halaman sebaiknya menyetel judul tab dengan `<Head title="..." />` dari `@inertiajs/react` — formatnya otomatis jadi `"<title> - <APP_NAME>"` (diatur di `resources/js/app.jsx`).
+
+### Modal konfirmasi (bukan `window.confirm()`)
+
+Semua tombol "Hapus" di halaman admin pakai modal bertema, bukan dialog bawaan browser:
+
+```jsx
+import { useConfirm } from "@/Contexts/ConfirmContext";
+
+const confirm = useConfirm();
+const handleDelete = async (id) => {
+    if (await confirm("Hapus data ini?")) {
+        router.delete(`/admin/xxx/${id}`);
+    }
+};
+```
+
+`ConfirmProvider` sudah terpasang di `AdminLayout`, jadi tinggal pakai hook-nya di halaman admin manapun.
 
 ### Cara data sampai ke halaman
 
@@ -134,4 +169,6 @@ git push -u origin fitur/nama-fitur-kamu
 ## Catatan Penting
 
 - Upload foto saat ini disimpan **lokal** di server masing-masing (`storage/app/public`). Foto yang di-upload di laptop kamu **tidak otomatis muncul** di laptop tim lain — ini normal untuk tahap development, akan dipindah ke cloud storage sebelum deploy production.
+- Registrasi admin **tidak lagi publik**. Lihat bagian [Akun admin](#5-akun-admin) di atas.
+- Setelah logout, user diarahkan ke halaman `/login`, bukan ke beranda.
 - Kalau menemukan bug atau bagian yang belum sesuai desain, koordinasikan dulu sebelum mengubah struktur Controller/route, karena berkaitan langsung dengan skema database.
