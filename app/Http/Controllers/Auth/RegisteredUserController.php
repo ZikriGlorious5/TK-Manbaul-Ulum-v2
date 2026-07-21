@@ -7,7 +7,6 @@ use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
@@ -17,15 +16,19 @@ use Inertia\Response;
 class RegisteredUserController extends Controller
 {
     /**
-     * Display the registration view.
+     * Display the "tambah admin" view.
+     * Route ini dilindungi middleware auth+verified (lihat routes/web.php),
+     * jadi hanya admin yang sudah login yang bisa mengaksesnya.
      */
     public function create(): Response
     {
-        return Inertia::render('Auth/Register');
+        return Inertia::render('Admin/RegisterAdmin');
     }
 
     /**
-     * Handle an incoming registration request.
+     * Handle pembuatan akun admin baru oleh admin yang sedang login.
+     * Tidak melakukan Auth::login() ke akun baru — sesi tetap milik
+     * admin yang sedang login (yang membuat akun ini).
      *
      * @throws ValidationException
      */
@@ -45,8 +48,8 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        Auth::login($user);
-
-        return redirect(route('dashboard', absolute: false));
+        return redirect()
+            ->route('dashboard')
+            ->with('success', "Akun admin \"{$user->name}\" berhasil dibuat.");
     }
 }

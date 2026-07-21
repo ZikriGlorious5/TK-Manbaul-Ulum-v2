@@ -1,16 +1,22 @@
 import React from "react";
-import { Link, router, usePage } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 import AdminLayout from "@/Layouts/AdminLayout";
+import { useConfirm } from "@/Contexts/ConfirmContext";
 
 function GuruIndex({ gurus }) {
     const { flash } = usePage().props;
-    const handleDelete = (id, nama) => {
-        if (confirm(`Hapus data guru "${nama}"?`))
+    const confirm = useConfirm();
+
+    const handleDelete = async (id, nama) => {
+        if (await confirm(`Hapus data guru "${nama}"?`)) {
             router.delete(`/admin/guru/${id}`);
+        }
     };
 
     return (
         <div>
+            <Head title="Kelola Guru" />
+
             <div className="flex items-center justify-between mb-6">
                 <div>
                     <h1 className="font-fredoka text-2xl text-green-dark">

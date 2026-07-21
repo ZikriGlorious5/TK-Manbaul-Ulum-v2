@@ -1,4 +1,5 @@
 import React from "react";
+import { Head } from "@inertiajs/react";
 import MainLayout from "@/Layouts/MainLayout";
 import useReveal from "@/Components/useReveal";
 
@@ -100,6 +101,8 @@ function Kegiatan({ kegiatans }) {
     useReveal();
     return (
         <>
+            <Head title="Kegiatan" />
+
             {/* PAGE HEADER */}
             <section className="relative overflow-hidden text-white text-center px-6 pt-[70px] pb-[50px] bg-gradient-to-br from-green-dark to-green-mid">
                 <h1 className="font-fredoka text-[42px] mb-2">

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import AdminLayout from "@/Layouts/AdminLayout";
 
 const cards = [
@@ -39,6 +39,8 @@ const cards = [
 function Dashboard() {
     return (
         <div>
+            <Head title="Dashboard Admin" />
+
             <h1 className="font-fredoka text-2xl text-green-dark mb-1">
                 Dashboard Admin
             </h1>

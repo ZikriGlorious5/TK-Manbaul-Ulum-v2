@@ -1,17 +1,22 @@
 import React from "react";
-import { Link, router, usePage } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 import AdminLayout from "@/Layouts/AdminLayout";
+import { useConfirm } from "@/Contexts/ConfirmContext";
 
 function PrestasiIndex({ prestasis }) {
     const { flash } = usePage().props;
+    const confirm = useConfirm();
 
-    const handleDelete = (id, judul) => {
-        if (confirm(`Hapus prestasi "${judul}"?`))
+    const handleDelete = async (id, judul) => {
+        if (await confirm(`Hapus prestasi "${judul}"?`)) {
             router.delete(`/admin/prestasi/${id}`);
+        }
     };
 
     return (
         <div>
+            <Head title="Kelola Prestasi" />
+
             <div className="flex items-center justify-between mb-6">
                 <div>
                     <h1 className="font-fredoka text-2xl text-green-dark">

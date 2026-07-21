@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import MainLayout from "@/Layouts/MainLayout";
 import useReveal from "@/Components/useReveal";
 
@@ -84,6 +84,8 @@ function Home() {
     useReveal();
     return (
         <>
+            <Head title="Beranda" />
+
             {/* HERO */}
             <section className="relative overflow-hidden flex items-center min-h-[88vh] py-[60px] bg-gradient-to-br from-[#1b4332] via-[#2d6a4f] to-[#a8d8b0]">
                 <div
@@ -410,20 +412,22 @@ function Home() {
                                 🕐 Senin–Jumat, 07.00–11.00 WIB
                             </p>
                             <div className="flex gap-3 flex-wrap mt-4">
-                                href="https://wa.me/6281289695442"
-                                className="inline-block bg-[#25D366] text-white
-                                px-[22px] py-[11px] rounded-full font-extrabold
-                                text-sm shadow-btn-wa transition-transform
-                                hover:-translate-y-0.5" target="_blank"
-                                rel="noreferrer"
-                                <a>Chat WhatsApp</a>
-                                href="https://maps.google.com/?q=-6.545979,106.691594"
-                                className="inline-block bg-yellow
-                                text-brown-text px-[22px] py-[11px] rounded-full
-                                font-extrabold text-sm shadow-btn-download
-                                transition-transform hover:-translate-y-0.5"
-                                target="_blank" rel="noreferrer"
-                                <a>Buka di Maps</a>
+                                <a
+                                    href="https://wa.me/6281289695442"
+                                    className="inline-block bg-[#25D366] text-white px-[22px] py-[11px] rounded-full font-extrabold text-sm shadow-btn-wa transition-transform hover:-translate-y-0.5"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    Chat WhatsApp
+                                </a>
+                                <a
+                                    href="https://maps.google.com/?q=-6.545979,106.691594"
+                                    className="inline-block bg-yellow text-brown-text px-[22px] py-[11px] rounded-full font-extrabold text-sm shadow-btn-download transition-transform hover:-translate-y-0.5"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    Buka di Maps
+                                </a>
                             </div>
                         </div>
                         <div

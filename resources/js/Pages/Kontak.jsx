@@ -1,5 +1,5 @@
 import React from "react";
-import { useForm, usePage } from "@inertiajs/react";
+import { Head, useForm, usePage } from "@inertiajs/react";
 import MainLayout from "@/Layouts/MainLayout";
 import useReveal from "@/Components/useReveal";
 
@@ -43,6 +43,8 @@ function Kontak() {
 
     return (
         <>
+            <Head title="Kontak" />
+
             {/* PAGE HEADER */}
             <section className="relative overflow-hidden text-white text-center px-6 pt-[70px] pb-[50px] bg-gradient-to-br from-green-dark to-green-mid">
                 <h1 className="font-fredoka text-[42px] mb-2">
