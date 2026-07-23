@@ -1,15 +1,22 @@
 import React from "react";
-import { router, usePage } from "@inertiajs/react";
+import { Head, router, usePage } from "@inertiajs/react";
 import AdminLayout from "@/Layouts/AdminLayout";
+import { useConfirm } from "@/Contexts/ConfirmContext";
 
 function PesanKontak({ pesans }) {
     const { flash } = usePage().props;
-    const handleDelete = (id) => {
-        if (confirm("Hapus pesan ini?")) router.delete(`/admin/pesan/${id}`);
+    const confirm = useConfirm();
+
+    const handleDelete = async (id) => {
+        if (await confirm("Hapus pesan ini?")) {
+            router.delete(`/admin/pesan/${id}`);
+        }
     };
 
     return (
         <div>
+            <Head title="Pesan Masuk" />
+
             <h1 className="font-fredoka text-2xl text-green-dark mb-1">
                 Pesan Masuk
             </h1>

@@ -4,6 +4,7 @@ use App\Http\Controllers\{
     HomeController, KegiatanController, PrestasiController,
     SejarahController, GaleriController, GuruController, PesanKontakController
 };
+use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -43,6 +44,10 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
     Route::get('/pesan', [PesanKontakController::class, 'index'])->name('pesan.index');
     Route::delete('/pesan/{pesanKontak}', [PesanKontakController::class, 'destroy'])->name('pesan.destroy');
+
+    // Tambah admin baru — hanya admin yang sudah login yang bisa akses.
+    Route::get('/tambah-admin', [RegisteredUserController::class, 'create'])->name('register.create');
+    Route::post('/tambah-admin', [RegisteredUserController::class, 'store'])->name('register.store');
 });
 
 require __DIR__.'/auth.php';

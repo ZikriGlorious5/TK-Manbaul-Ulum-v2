@@ -30,9 +30,11 @@ function Navbar() {
                 <div className="px-7">
                     <nav className="flex items-center gap-[18px] py-2.5">
                         <div className="flex items-center gap-2.5">
-                            <div className="w-11 h-11 bg-green-dark text-white rounded-full flex items-center justify-center font-fredoka text-base shrink-0 shadow-logo-circle">
-                                TK
-                            </div>
+                            <img
+                                src="/images/logo.png"
+                                alt="Logo TK Manbaul Ulum"
+                                className="w-11 h-11 object-contain shrink-0"
+                            />
                             <div className="flex flex-col">
                                 <Link
                                     href="/"

@@ -1,18 +1,22 @@
 import React from "react";
-import { Link, router, usePage } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 import AdminLayout from "@/Layouts/AdminLayout";
+import { useConfirm } from "@/Contexts/ConfirmContext";
 
 function KegiatanIndex({ kegiatans }) {
     const { flash } = usePage().props;
+    const confirm = useConfirm();
 
-    const handleDelete = (id, judul) => {
-        if (confirm(`Hapus kegiatan "${judul}"?`)) {
+    const handleDelete = async (id, judul) => {
+        if (await confirm(`Hapus kegiatan "${judul}"?`)) {
             router.delete(`/admin/kegiatan/${id}`);
         }
     };
 
     return (
         <div>
+            <Head title="Kelola Kegiatan" />
+
             <div className="flex items-center justify-between mb-6">
                 <div>
                     <h1 className="font-fredoka text-2xl text-green-dark">
