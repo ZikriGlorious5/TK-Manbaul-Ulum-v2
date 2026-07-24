@@ -33,7 +33,7 @@ class GaleriController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'foto'    => 'required|image|max:2048',
+            'foto'    => 'required|image|max:10240',
             'caption' => 'nullable|string|max:255',
         ]);
 
